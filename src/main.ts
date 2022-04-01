@@ -8,6 +8,7 @@ import App from './App.vue'
 import { createApp } from 'vue'
 
 import { router, setupRouter } from '/@/router'
+import { setupRouterGuard } from '/@/router/guard';
 
 if (import.meta.env.DEV) {
     import('ant-design-vue/dist/antd.less');
@@ -16,7 +17,7 @@ if (import.meta.env.DEV) {
 async function bootstrap() {
   const app = createApp(App);
   setupRouter(app);
-  
+  //setupRouterGuard(router)
   app.mount('#app');
 }
 bootstrap();
