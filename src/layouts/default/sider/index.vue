@@ -1,6 +1,6 @@
 <template>
     <Drawer>
-             <Sider />
+         <Sider />
     </Drawer>
     <MixSider />
 </template>

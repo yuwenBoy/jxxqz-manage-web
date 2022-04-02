@@ -1,6 +1,6 @@
 import { computed, unref } from 'vue';
 
-import { useAppStore } from '/@/store/modules/app';
+// import { useAppStore } from '/@/store/modules/app';
 
 import { useRouter } from 'vue-router';
 
@@ -8,7 +8,8 @@ import { useRouter } from 'vue-router';
  * @description: Full screen display content
  */
 export const useFullContent = () => {
-  const appStore = useAppStore();
+  console.log(123)
+  // const appStore = useAppStore();
   const router = useRouter();
   const { currentRoute } = router;
 
@@ -21,7 +22,7 @@ export const useFullContent = () => {
       return true;
     }
     // Return to the configuration in the configuration file
-    return appStore.getProjectConfig.fullContent;
+    // return appStore.getProjectConfig.fullContent;
   });
 
   return { getFullContent };

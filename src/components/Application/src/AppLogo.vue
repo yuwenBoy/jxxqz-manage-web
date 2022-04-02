@@ -1,20 +1,25 @@
+<!--
+ * @Author: Vben
+ * @Description: logo component
+-->
 <template>
-    <div class="anticon" :class="getAppLogoClass" @click="goHome">
-        <img src="../../../assets/images/logo.png" />
-        <div class="ml-2 truncate md:opacity-100" :class="getTitleClass" v-show="showTitle">
-               {{ title }}
-        </div>
+  <div class="anticon" :class="getAppLogoClass" @click="goHome">
+    <img src="../../../assets/images/logo.png" />
+    <div class="ml-2 truncate md:opacity-100" :class="getTitleClass" v-show="showTitle">
+      {{ title }}
     </div>
+  </div>
 </template>
 <script lang="ts" setup>
-import { computed,unref } from 'vue';
-import { useGlobSetting } from '/@/hooks/setting';
-import {useGo } from '/@/hooks/web/usePage';
-import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
-import { useDesign } from '/@/hooks/web/useDesign';
-import { PageEnum } from '/@/enums/pageEnum';
+  import { computed, unref } from 'vue';
+  import { useGlobSetting } from '/@/hooks/setting';
+  import { useGo } from '/@/hooks/web/usePage';
+  import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
+  import { useDesign } from '/@/hooks/web/useDesign';
+  import { PageEnum } from '/@/enums/pageEnum';
+  import { useUserStore } from '/@/store/modules/user';
 
-const props = defineProps({
+  const props = defineProps({
     /**
      * The theme of the current parent component
      */
@@ -27,29 +32,32 @@ const props = defineProps({
      * The title is also displayed when the menu is collapsed
      */
     alwaysShowTitle: { type: Boolean },
-});
-const { prefixCls } = useDesign('app-logo');
-const { getCollapsedShowTitle } = useMenuSetting();
+  });
 
-const { title } = useGlobSetting();
-const go = useGo();
-const getAppLogoClass = computed(() =>[
+  const { prefixCls } = useDesign('app-logo');
+  const { getCollapsedShowTitle } = useMenuSetting();
+  const userStore = useUserStore();
+  debugger
+  const { title } = useGlobSetting();
+  const go = useGo();
+
+  const getAppLogoClass = computed(() => [
     prefixCls,
     props.theme,
-    {'collapsed-show-title':unref(getCollapsedShowTitle) },
-]);
+    { 'collapsed-show-title': unref(getCollapsedShowTitle) },
+  ]);
 
-const getTitleClass = computed(()=>[
+  const getTitleClass = computed(() => [
     `${prefixCls}__title`,
-    {'xs:opacity-0':!props.alwaysShowTitle}
-]);
+    {
+      'xs:opacity-0': !props.alwaysShowTitle,
+    },
+  ]);
 
-function goHome(){
-    //  go(userStore.getUserInfo.homePath || PageEnum.BASE_HOME);
-    go(PageEnum.BASE_HOME);
-}
+  function goHome() {
+    go(userStore.getUserInfo.homePath || PageEnum.BASE_HOME);
+  }
 </script>
-
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-app-logo';
 

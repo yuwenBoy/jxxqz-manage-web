@@ -5,7 +5,7 @@
            <LayoutTrigger />
          </template>
         <LayoutMenu />
-      <DragBar ref="dragBarRef" />
+             <DragBar ref="dragBarRef" />
          </Sider>
     </div>
 </template>
