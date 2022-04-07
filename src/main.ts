@@ -6,9 +6,11 @@ import 'virtual:windi-utilities.css';
 import 'virtual:svg-icons-register';
 import App from './App.vue'
 import { createApp } from 'vue'
-
+import { initAppConfigStore } from '/@/logics/initAppConfig';
 import { router, setupRouter } from '/@/router'
 import { setupRouterGuard } from '/@/router/guard';
+import { setupStore } from '/@/store';
+import { setupGlobDirectives } from '/@/directives';
 
 if (import.meta.env.DEV) {
     import('ant-design-vue/dist/antd.less');
@@ -16,8 +18,15 @@ if (import.meta.env.DEV) {
 
 async function bootstrap() {
   const app = createApp(App);
+  
+  // Configure store
+  setupStore(app);
+ // Initialize internal system configuration
+ initAppConfigStore();
   setupRouter(app);
-  //setupRouterGuard(router)
+  setupRouterGuard(router);
+    // Register global directive
+  setupGlobDirectives(app);
   app.mount('#app');
 }
 bootstrap();

@@ -21,7 +21,7 @@ import { filter } from '/@/utils/helper/treeHelper';
 import { getMenuList } from '/@/api/sys/menu';
 import { getPermCode } from '/@/api/sys/user';
 
-import { useMessage } from '/@/hooks/web/useMessage';
+// import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
 
 interface PermissionState {
@@ -173,12 +173,12 @@ export const usePermissionStore = defineStore({
 
         //  If you are sure that you do not need to do background dynamic permissions, please comment the entire judgment below
         case PermissionModeEnum.BACK:
-          const { createMessage } = useMessage();
+          // const { createMessage } = useMessage();
 
-          createMessage.loading({
-            content: t('sys.app.menuLoading'),
-            duration: 1,
-          });
+          // createMessage.loading({
+          //   content: t('sys.app.menuLoading'),
+          //   duration: 1,
+          // });
 
           // !Simulate to obtain permission codes from the background,
           // this function may only need to be executed once, and the actual project can be put at the right time by itself

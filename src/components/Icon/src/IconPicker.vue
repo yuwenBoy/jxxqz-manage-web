@@ -89,7 +89,7 @@
   import { useDebounceFn } from '@vueuse/core';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  // import { useMessage } from '/@/hooks/web/useMessage';
   import svgIcons from 'virtual:svg-icons-names';
 
   // 没有使用别名引入，是因为WebStorm当前版本还不能正确识别，会报unused警告
@@ -136,7 +136,7 @@
 
   const debounceHandleSearchChange = useDebounceFn(handleSearchChange, 100);
   const { clipboardRef, isSuccessRef } = useCopyToClipboard(props.value);
-  const { createMessage } = useMessage();
+  // const { createMessage } = useMessage();
 
   const { getPaginationList, getTotal, setCurrentPage } = usePagination(
     currentList,
@@ -164,7 +164,7 @@
     if (props.copy) {
       clipboardRef.value = icon;
       if (unref(isSuccessRef)) {
-        createMessage.success(t('component.icon.copy'));
+        // createMessage.success(t('component.icon.copy'));
       }
     }
   }
