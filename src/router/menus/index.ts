@@ -2,7 +2,7 @@ import type { Menu, MenuModule } from '/@/router/types';
 import type { RouteRecordNormalized } from 'vue-router';
 
 import { useAppStoreWithOut } from '/@/store/modules/app';
-// import { usePermissionStore } from '/@/store/modules/permission';
+import { usePermissionStore } from '/@/store/modules/permission';
 import { transformMenuModule, getAllParentPath } from '/@/router/helper/menuHelper';
 import { filter } from '/@/utils/helper/treeHelper';
 import { isUrl } from '/@/utils/is';
@@ -52,13 +52,13 @@ const staticMenus: Menu[] = [];
 })();
 
 async function getAsyncMenus() {
-//   const permissionStore = usePermissionStore();
-//   if (isBackMode()) {
-//     return permissionStore.getBackMenuList.filter((item) => !item.meta?.hideMenu && !item.hideMenu);
-//   }
-//   if (isRouteMappingMode()) {
-//     return permissionStore.getFrontMenuList.filter((item) => !item.hideMenu);
-//   }
+  const permissionStore = usePermissionStore();
+  if (isBackMode()) {
+    return permissionStore.getBackMenuList.filter((item) => !item.meta?.hideMenu && !item.hideMenu);
+  }
+  if (isRouteMappingMode()) {
+    return permissionStore.getFrontMenuList.filter((item) => !item.hideMenu);
+  }
   return staticMenus;
 }
 

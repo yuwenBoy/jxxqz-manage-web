@@ -12,7 +12,7 @@ const mixSideHasChildren = ref(false);
 
 export function useMenuSetting() {
   const { getFullContent: fullContent } = useFullContent();
-   const appStore = useAppStore();
+  const appStore = useAppStore();
 
   const getShowSidebar = computed(() => {
     return (

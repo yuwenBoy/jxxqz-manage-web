@@ -1,6 +1,6 @@
 import type { Router, RouteLocationNormalized } from 'vue-router';
 import { useAppStoreWithOut } from '/@/store/modules/app';
-// import { useUserStoreWithOut } from '/@/store/modules/user';
+import { useUserStoreWithOut } from '/@/store/modules/user';
 import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting';
 import { AxiosCanceler } from '/@/utils/http/axios/axiosCancel';
 import { Modal, notification } from 'ant-design-vue';
@@ -10,7 +10,6 @@ import { setRouteChange } from '/@/logics/mitt/routeChange';
 import { createPermissionGuard } from './permissionGuard';
 import { createStateGuard } from './stateGuard';
 import nProgress from 'nprogress';
-
 import projectSetting from '/@/settings/projectSetting';
 import { createParamMenuGuard } from './paramMenuGuard';
 
@@ -49,11 +48,11 @@ function createPageGuard(router: Router) {
 
 // Used to handle page loading status
 function createPageLoadingGuard(router: Router) {
-//   const userStore = useUserStoreWithOut();
+  const userStore = useUserStoreWithOut();
   const appStore = useAppStoreWithOut();
   const { getOpenPageLoading } = useTransitionSetting();
   router.beforeEach(async (to) => {
-    if (!false) {//if (!userStore.getToken) {
+    if (!userStore.getToken) {
       return true;
     }
     if (to.meta.loaded) {

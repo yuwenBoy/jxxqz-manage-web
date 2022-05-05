@@ -7,19 +7,19 @@ import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import { VAxios } from './Axios';
 import { checkStatus } from './checkStatus';
 import { useGlobSetting } from '/@/hooks/setting';
-// import { useMessage } from '/@/hooks/web/useMessage';
+import { useMessage } from '/@/hooks/web/useMessage';
 import { RequestEnum, ResultEnum, ContentTypeEnum } from '/@/enums/httpEnum';
 import { isString } from '/@/utils/is';
 import { getToken } from '/@/utils/auth';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
-// import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
-// import { useI18n } from '/@/hooks/web/useI18n';
+import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
+import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
-// import { useUserStoreWithOut } from '/@/store/modules/user';
+import { useUserStoreWithOut } from '/@/store/modules/user';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
-// const { createMessage, createErrorModal } = useMessage();
+const { createMessage, createErrorModal } = useMessage();
 
 /**
  * @description: 数据处理，方便区分多种处理方式
@@ -29,7 +29,7 @@ const transform: AxiosTransform = {
    * @description: 处理请求数据。如果数据不是预期格式，可直接抛出错误
    */
   transformRequestHook: (res: AxiosResponse<Result>, options: RequestOptions) => {
-    // const { t } = useI18n();
+    const { t } = useI18n();
     const { isTransformResponse, isReturnNativeResponse } = options;
     // 是否返回原生响应头 比如：需要获取响应头时使用该属性
     if (isReturnNativeResponse) {
@@ -45,7 +45,7 @@ const transform: AxiosTransform = {
     const { data } = res;
     if (!data) {
       // return '[HTTP] Request has no return value';
-      throw new Error('sys.api.apiRequestFailed');//t('sys.api.apiRequestFailed'));
+      throw new Error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
     const { code, result, message } = data;
@@ -61,10 +61,10 @@ const transform: AxiosTransform = {
     let timeoutMsg = '';
     switch (code) {
       case ResultEnum.TIMEOUT:
-        timeoutMsg = 'sys.api.timeoutMessage';//t('sys.api.timeoutMessage');
-        // const userStore = useUserStoreWithOut();
-        // userStore.setToken(undefined);
-        // userStore.logout(true);
+        timeoutMsg = t('sys.api.timeoutMessage');
+        const userStore = useUserStoreWithOut();
+        userStore.setToken(undefined);
+        userStore.logout(true);
         break;
       default:
         if (message) {
@@ -75,13 +75,12 @@ const transform: AxiosTransform = {
     // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === 'modal') {
-         //t('sys.api.errorTip')
-      // createErrorModal({ title:'sys.api.errorTip', content: timeoutMsg });
+      createErrorModal({ title: t('sys.api.errorTip'), content: timeoutMsg });
     } else if (options.errorMessageMode === 'message') {
-      // createMessage.error(timeoutMsg);
+      createMessage.error(timeoutMsg);
     }
-    //t('sys.api.apiRequestFailed')
-    throw new Error(timeoutMsg || 'sys.api.apiRequestFailed');
+
+    throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'));
   },
 
   // 请求之前处理config
@@ -159,9 +158,9 @@ const transform: AxiosTransform = {
    * @description: 响应错误处理
    */
   responseInterceptorsCatch: (error: any) => {
-    // const { t } = useI18n();
-    // const errorLogStore = useErrorLogStoreWithOut();
-    // errorLogStore.addAjaxErrorInfo(error);
+    const { t } = useI18n();
+    const errorLogStore = useErrorLogStoreWithOut();
+    errorLogStore.addAjaxErrorInfo(error);
     const { response, code, message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
     const msg: string = response?.data?.error?.message ?? '';
@@ -170,18 +169,17 @@ const transform: AxiosTransform = {
 
     try {
       if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {
-        errMessage = 'sys.api.apiTimeoutMessage'//t('sys.api.apiTimeoutMessage');
+        errMessage = t('sys.api.apiTimeoutMessage');
       }
       if (err?.includes('Network Error')) {
-        errMessage ='sys.api.networkExceptionMsg'// t('sys.api.networkExceptionMsg');
+        errMessage = t('sys.api.networkExceptionMsg');
       }
 
       if (errMessage) {
         if (errorMessageMode === 'modal') {
-            // t('sys.api.errorTip')
-          // createErrorModal({ title: 'sys.api.errorTip', content: errMessage });
+          createErrorModal({ title: t('sys.api.errorTip'), content: errMessage });
         } else if (errorMessageMode === 'message') {
-          // createMessage.error(errMessage);
+          createMessage.error(errMessage);
         }
         return Promise.reject(error);
       }

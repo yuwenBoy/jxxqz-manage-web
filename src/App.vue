@@ -1,18 +1,19 @@
 <template>
-  <ConfigProvider>
- <!-- <Input
-        size="large"
-        class="fix-auto-fill"
-      />
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="我的第一个vue3项目213131" /> -->
-  <AppProvider>
-       <RouterView />
-  </AppProvider>
+  <ConfigProvider :locale="getAntdLocale">
+    <AppProvider>
+      <RouterView />
+    </AppProvider>
   </ConfigProvider>
 </template>
-<script setup lang="ts">
-   import { AppProvider } from '/@/components/Application'
-</script>
 
- 
+<script lang="ts" setup>
+  import { ConfigProvider } from 'ant-design-vue';
+  import { AppProvider } from '/@/components/Application';
+  import { useTitle } from '/@/hooks/web/useTitle';
+  import { useLocale } from '/@/locales/useLocale';
+
+  // support Multi-language
+  const { getAntdLocale } = useLocale();
+  // Listening to page changes and dynamically changing site titles
+  useTitle();
+</script>

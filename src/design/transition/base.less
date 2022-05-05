@@ -1,19 +1,18 @@
 .transition-default() {
-    &-enter-active,
-    &-leave-active {
-      transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1) !important;
-    }
-  
-    &-move {
-      transition: transform 0.4s;
-    }
+  &-enter-active,
+  &-leave-active {
+    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1) !important;
   }
-  
-  .expand-transition {
-    .transition-default();
+
+  &-move {
+    transition: transform 0.4s;
   }
-  
-  .expand-x-transition {
-    .transition-default();
-  }
-  
+}
+
+.expand-transition {
+  .transition-default();
+}
+
+.expand-x-transition {
+  .transition-default();
+}
